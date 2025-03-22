@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Control System</title>
+    <style>
+        /* General Styling */
+        body {
+            background-color: #1e1e1e;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Traffic Light Box */
+        #TrafficControl {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid #444;
+            width: 220px;
+            height: 450px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 30px;
+            background: linear-gradient(to bottom, #111, #333);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Traffic Light Circles */
+        .light {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            margin: 15px 0;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #redLight {
+            background-color: #a10000;
+            box-shadow: 0px 0px 15px 3px rgba(255, 0, 0, 0.7);
+        }
+        #yellowLight {
+            background-color: #d4a100;
+            color: black;
+            box-shadow: 0px 0px 15px 3px rgba(255, 255, 0, 0.7);
+        }
+        #greenLight {
+            background-color: #008f00;
+            box-shadow: 0px 0px 15px 3px rgba(0, 255, 0, 0.7);
+        }
+
+        /* Button Styles */
+        .button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            background: #444;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Traffic Control System</h1>
+    <div id="TrafficControl">
+        <div id="trafficLight">
+            <div id="greenLight" class="light">😊</div>            
+            <div id="yellowLight" class="light">👍</div>
+            <div id="redLight" class="light">❤️</div>
+        </div>  
+    </div>
+    <div class="button">
+        <button id="startButton">Start Signal</button>
+        <button id="stopButton">Stop Signal</button>
+        <button id="resetButton">Reset Signal</button>
+    </div>
+
+    <script>
+            const redLight = document.getElementById("redLight");
+            const yellowLight = document.getElementById("yellowLight");
+            const greenLight = document.getElementById("greenLight");
+
+            const startButton = document.getElementById("startButton");
+            const stopButton = document.getElementById("stopButton");
+            const resetButton = document.getElementById("resetButton");
+
+            const timerDisplay = document.createElement("div");
+            timerDisplay.style.fontSize = "24px";
+            timerDisplay.style.fontWeight = "bold";
+            timerDisplay.style.color = "white";
+            timerDisplay.style.marginBottom = "10px";
+            timerDisplay.innerText = "Waiting...";
+            document.getElementById("TrafficControl").prepend(timerDisplay);
+
+            let isRunning = false;
+            let countdown = 0;
+            let timerInterval = null; // Store the interval ID for cleanup
+
+            // Reset lights to initial state
+            function resetLights() {
+                redLight.style.opacity = "0.2";
+                yellowLight.style.opacity = "0.2";
+                greenLight.style.opacity = "0.2";
+            }
+
+            // Update timer display and handle countdown
+            function startTimer(duration) {
+                if (timerInterval) clearInterval(timerInterval); // Clear any existing interval
+                
+                countdown = duration;
+                timerDisplay.innerText = countdown + "s";
+                
+                timerInterval = setInterval(() => {
+                    countdown--;
+                    timerDisplay.innerText = countdown + "s";
+                    
+                    if (countdown <= 0) {
+                        clearInterval(timerInterval);
+                    }
+                }, 1000);
+            }
+
+            // Turn on specific light and start its timer
+            function turnOnLight(light, duration) {
+                resetLights();
+                switch(light) {
+                    case "red":
+                        redLight.style.opacity = "1";
+                        break;
+                    case "yellow":
+                        yellowLight.style.opacity = "1";
+                        break;
+                    case "green":
+                        greenLight.style.opacity = "1";
+                        break;
+                }
+                startTimer(duration);
+            }
+
+            // Main traffic light cycle
+            function startTrafficLight() {
+                if (isRunning) return;
+                isRunning = true;
+
+                function cycleLights() {
+                    if (!isRunning) return;
+
+                    // Green light sequence
+                    turnOnLight("green", 5);
+                    const greenTimeout = setTimeout(() => {
+                        if (!isRunning) return;
+
+                        // Yellow light sequence
+                        turnOnLight("yellow", 3);
+                        const yellowTimeout = setTimeout(() => {
+                            if (!isRunning) return;
+
+                            // Red light sequence
+                            turnOnLight("red", 5);
+                            const redTimeout = setTimeout(() => {
+                                if (isRunning) cycleLights(); // Only continue if still running
+                            }, 5000);
+
+                        }, 3000);
+
+                    }, 5000);
+
+                    // Store timeouts if you need to clear them later
+                }
+
+                cycleLights();
+            }
+
+            // Stop the traffic light
+            function stopTrafficLight() {
+                isRunning = false;
+                if (timerInterval) clearInterval(timerInterval);
+                timerDisplay.innerText = "Stopped";
+            }
+
+            // Reset everything
+            function resetTrafficLight() {
+                isRunning = false;
+                if (timerInterval) clearInterval(timerInterval);
+                resetLights();
+                timerDisplay.innerText = "Waiting...";
+            }
+
+            // Event listeners
+            startButton.addEventListener("click", startTrafficLight);
+            stopButton.addEventListener("click", stopTrafficLight);
+            resetButton.addEventListener("click", resetTrafficLight);
+    </script>
+</body>
+</html>
