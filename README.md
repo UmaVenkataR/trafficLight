@@ -10,7 +10,7 @@ A modern, interactive traffic light simulation built with HTML, CSS, and JavaScr
 #### Features
 - **Responsive Design**: Clean, centered layout with a sleek dark theme and gradient background.
 - **Animated Traffic Lights**: Three circular lights (Red, Yellow, Green) with glow effects and opacity transitions.
-- **Timer Display**: Real-time countdown for each light phase (Green: 4s, Yellow: 3s, Red: 5s).
+- **Timer Display**: Real-time countdown for each light phase (Green: 5s, Yellow: 3s, Red: 5s).
 - **Control Buttons**: Start, Stop, and Reset functionality to manage the traffic light cycle.
 - **Emoji Indicators**: Fun emoji representations for each light state (❤️ for Red, 👍 for Yellow, 😊 for Green).
 
