@@ -1,8 +1,3 @@
-# trafficLight
-Here's a concise and professional description you can add to your GitHub repository for this traffic light system:
-
----
-
 ### Traffic Control System
 
 A modern, interactive traffic light simulation built with HTML, CSS, and JavaScript. This project showcases a visually appealing traffic light interface with a smooth, functional light cycle and timer system.
@@ -26,7 +21,3 @@ A modern, interactive traffic light simulation built with HTML, CSS, and JavaScr
 
 #### Purpose
 Created as a demonstration of front-end development skills, combining aesthetic design with functional programming. Ideal for learning about DOM manipulation, event handling, and timing in JavaScript.
-
----
-
-Feel free to adjust this description to match your personal style or add any additional details specific to your implementation!
